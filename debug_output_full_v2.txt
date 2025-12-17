@@ -1,0 +1,21 @@
+Starting MasterQR V2 Debug...
+
+1. Authenticating...
+Login Status: 200
+Login Response Body: {"error":0,"status":1,"message":"Authentication successful.","displayMessage":null,"values":{"accessToken":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbWFzdGVycXIucGFnb2ZhY2lsLmNvbS5iby9hcGkvc2VydmljZXMvdjIvbG9naW4iLCJpYXQiOjE3NjU5NDIwMTIsImV4cCI6MTc2NTk0NDAwMCwibmJmIjoxNzY1OTQyMDEyLCJqdGkiOiI1VUEwUEhQbVVkVjNIbjIyIiwic3ViIjoiNDciLCJwcnYiOiJlZTMwYTE1M2VhZTA0ZTczZjc5NDA2MzlkYTYwMzRiNzEzOTQ5YmE1In0.Upys7BIdSZl9Psl_sZpQ2Gbd4DYgLICQPzGoIeN0Uig","tokenType":"bearer","expiresInMinutes":33.13}}
+
+   TypeError 
+
+  strlen(): Argument #1 ($string) must be of type string, array given
+
+  at debug_masterqr.php:63
+     59Ôûò         echo "Could not extract token.\n";
+     60Ôûò         exit;
+     61Ôûò     }
+     62Ôûò 
+  Ô×£  63Ôûò     echo "Token received (len=" . strlen($jwtToken) . ")\n";
+     64Ôûò 
+     65Ôûò     // 2. GENERATE QR
+     66Ôûò     echo "\n2. Generating QR...\n";
+     67Ôûò     $qrUrl = 'https://masterqr.pagofacil.com.bo/api/services/v2/generate-qr';
+

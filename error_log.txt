@@ -1,0 +1,13 @@
+Starting Manual Seeder Debug...
+WARNING:  database "db_grupo09sa" has a collation version mismatch
+DETAIL:  The database was created using collation version 2.39, but the operating system provides version 2.40.
+HINT:  Rebuild all objects in this database that use the default collation and run ALTER DATABASE db_grupo09sa REFRESH COLLATION VERSION, or build PostgreSQL with the right library version.
+
+
+CRITICAL SEEDER ERROR:
+Message: SQLSTATE[23505]: Unique violation: 7 ERROR:  duplicate key value violates unique constraint "usuarios_email_unique"
+DETAIL:  Key (email)=(admin@restaurante.com) already exists. (Connection: pgsql, SQL: insert into "usuarios" ("nombre", "apellido", "email", "telefono", "password", "estado", "id_rol", "updated_at", "created_at") values (Admin, Gerente, admin@restaurante.com, 70000000, $2y$12$zpIcUiPmDJqWEEYV9KCb9eYfLdBnmwFlDF3zKjzCw5tENqetHUFNW, 1, 1, 2025-12-16 19:30:54, 2025-12-16 19:30:54) returning "id_usuario")
+File: D:\Projects\TECNOWEB_SERVER\mesa\Laravel-12-Dashboard-Layout-Sidebar-and-Navbar-Bootstrap-5.3\vendor\laravel\framework\src\Illuminate\Database\Connection.php
+Line: 817
+SQL: insert into "usuarios" ("nombre", "apellido", "email", "telefono", "password", "estado", "id_rol", "updated_at", "created_at") values (?, ?, ?, ?, ?, ?, ?, ?, ?) returning "id_usuario"
+Bindings: ["Admin","Gerente","admin@restaurante.com","70000000","$2y$12$zpIcUiPmDJqWEEYV9KCb9eYfLdBnmwFlDF3zKjzCw5tENqetHUFNW",1,1,"2025-12-16 19:30:54","2025-12-16 19:30:54"]

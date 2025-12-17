@@ -1,0 +1,13 @@
+Starting Manual Seeder Debug...
+WARNING:  database "db_grupo09sa" has a collation version mismatch
+DETAIL:  The database was created using collation version 2.39, but the operating system provides version 2.40.
+HINT:  Rebuild all objects in this database that use the default collation and run ALTER DATABASE db_grupo09sa REFRESH COLLATION VERSION, or build PostgreSQL with the right library version.
+
+
+CRITICAL SEEDER ERROR:
+Message: SQLSTATE[23505]: Unique violation: 7 ERROR:  duplicate key value violates unique constraint "metodo_pagos_nombre_unique"
+DETAIL:  Key (nombre)=(Efectivo) already exists. (Connection: pgsql, SQL: insert into "metodo_pagos" ("nombre", "descripcion", "activo", "updated_at", "created_at") values (Efectivo, Pago en efectivo, 1, 2025-12-16 19:40:35, 2025-12-16 19:40:35) returning "id_metodo_pago")
+File: D:\Projects\TECNOWEB_SERVER\mesa\Laravel-12-Dashboard-Layout-Sidebar-and-Navbar-Bootstrap-5.3\vendor\laravel\framework\src\Illuminate\Database\Connection.php
+Line: 817
+SQL: insert into "metodo_pagos" ("nombre", "descripcion", "activo", "updated_at", "created_at") values (?, ?, ?, ?, ?) returning "id_metodo_pago"
+Bindings: ["Efectivo","Pago en efectivo",1,"2025-12-16 19:40:35","2025-12-16 19:40:35"]

@@ -1,0 +1,13 @@
+Starting Manual Seeder Debug...
+WARNING:  database "db_grupo09sa" has a collation version mismatch
+DETAIL:  The database was created using collation version 2.39, but the operating system provides version 2.40.
+HINT:  Rebuild all objects in this database that use the default collation and run ALTER DATABASE db_grupo09sa REFRESH COLLATION VERSION, or build PostgreSQL with the right library version.
+
+
+CRITICAL SEEDER ERROR:
+Message: SQLSTATE[23502]: Not null violation: 7 ERROR:  null value in column "tipo" of relation "categorias" violates not-null constraint
+DETAIL:  Failing row contains (2, Entradas, Platos de entrada y aperitivos, null, 2025-12-16 22:54:44, 2025-12-16 22:54:44). (Connection: pgsql, SQL: insert into "categorias" ("nombre", "descripcion", "updated_at", "created_at") values (Entradas, Platos de entrada y aperitivos, 2025-12-16 22:54:44, 2025-12-16 22:54:44) returning "id_categoria")
+File: D:\Projects\TECNOWEB_SERVER\mesa\Laravel-12-Dashboard-Layout-Sidebar-and-Navbar-Bootstrap-5.3\vendor\laravel\framework\src\Illuminate\Database\Connection.php
+Line: 822
+SQL: insert into "categorias" ("nombre", "descripcion", "updated_at", "created_at") values (?, ?, ?, ?) returning "id_categoria"
+Bindings: ["Entradas","Platos de entrada y aperitivos","2025-12-16 22:54:44","2025-12-16 22:54:44"]
