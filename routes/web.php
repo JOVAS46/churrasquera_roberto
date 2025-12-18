@@ -33,6 +33,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/mesas/{mesa}/cambiar-estado', [App\Http\Controllers\MesaController::class, 'cambiarEstado'])
         ->name('mesas.cambiar-estado')
         ->middleware('role:Administrador,gerente,Mesero,mesero');
+        
+    // Reservas (Gestión para Admin y Mesero)
+    Route::resource('reservas', App\Http\Controllers\ReservaController::class)
+        ->only(['index', 'update'])
+        ->middleware('role:Administrador,gerente,Mesero,mesero');
     
     // Rutas específicas por rol
     
@@ -87,5 +92,16 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:cocinero')->group(function () {
         Route::get('/cocina/pedidos', [App\Http\Controllers\CocinaController::class, 'pedidos'])->name('cocina.pedidos');
         Route::patch('/cocina/pedidos/{id}/estado', [App\Http\Controllers\CocinaController::class, 'cambiarEstado'])->name('cocina.cambiar-estado');
+    });
+
+    // Cliente
+    Route::middleware('role:cliente')->group(function () {
+        Route::get('/cliente/dashboard', [App\Http\Controllers\ClienteController::class, 'index'])->name('cliente.dashboard');
+        Route::get('/cliente/reservas', [App\Http\Controllers\ClienteController::class, 'indexReservas'])->name('cliente.reservas.index');
+        Route::get('/cliente/reservas/crear', [App\Http\Controllers\ClienteController::class, 'createReserva'])->name('cliente.reservas.create');
+        Route::post('/cliente/reservas', [App\Http\Controllers\ClienteController::class, 'storeReserva'])->name('cliente.reservas.store');
+        Route::get('/cliente/pagos', [App\Http\Controllers\ClienteController::class, 'pagos'])->name('cliente.pagos.index');
+        Route::post('/cliente/pagos', [App\Http\Controllers\ClienteController::class, 'realizarPago'])->name('cliente.pagos.store');
+        Route::get('/cliente/mesas-disponibles', [App\Http\Controllers\ClienteController::class, 'getMesasDisponibles'])->name('cliente.reservas.disponibles');
     });
 });

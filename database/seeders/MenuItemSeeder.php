@@ -13,11 +13,22 @@ class MenuItemSeeder extends Seeder
      */
     public function run(): void
     {
+        // Limpiar tablas para evitar duplicados
+        // 1. Eliminar relaciones con roles
+        \Illuminate\Support\Facades\DB::table('rol_menu')->delete();
+        
+        // 2. Eliminar submenús (hijos)
+        \Illuminate\Support\Facades\DB::table('menu_items')->whereNotNull('parent_id')->delete();
+
+        // 3. Eliminar ítems padre
+        \Illuminate\Support\Facades\DB::table('menu_items')->delete();
+
         // Obtener roles (usar los nombres exactos de la BD)
         $admin = Role::where('nombre_rol', 'gerente')->first();
         $mesero = Role::where('nombre_rol', 'mesero')->first();
         $cajero = Role::where('nombre_rol', 'cajero')->first();
         $cocinero = Role::where('nombre_rol', 'cocinero')->first();
+        $cliente = Role::where('nombre_rol', 'cliente')->first(); // Prepare variable here
 
         // Menú para Administrador/Gerente
         if ($admin) {
@@ -57,11 +68,25 @@ class MenuItemSeeder extends Seeder
             ]);
             $mesasAdmin->roles()->attach($admin->id_rol);
 
+            // Add Reservas for Admin
+            $reservasAdmin = MenuItem::create([
+                'nombre' => 'Reservas',
+                'ruta' => '/reservas', 
+                'icono' => 'fa-calendar-check',
+                'orden' => 5,
+                'activo' => true,
+            ]);
+            $reservasAdmin->roles()->attach($admin->id_rol);
+            // Optional: Subitems for Reservas (Listar, Crear)? 
+            // For now, simple item or reuse /cliente/reservas logic/controller if updated for admin.
+            // But user just said "add reserves". I'll add a simple link, maybe to /mesas implies reserves? 
+            // Better to have a 'Reservas' placeholder.
+
             $estadisticasAdmin = MenuItem::create([
                 'nombre' => 'Estadísticas',
                 'ruta' => '/admin/reportes',
                 'icono' => 'fa-chart-bar',
-                'orden' => 5,
+                'orden' => 6,
                 'activo' => true,
             ]);
             $estadisticasAdmin->roles()->attach($admin->id_rol);
@@ -71,7 +96,7 @@ class MenuItemSeeder extends Seeder
                 'nombre' => 'Pagos y Caja',
                 'ruta' => '#',
                 'icono' => 'fa-cash-register',
-                'orden' => 6,
+                'orden' => 7,
                 'activo' => true,
             ]);
             $pagosAdmin->roles()->attach($admin->id_rol);
@@ -108,7 +133,7 @@ class MenuItemSeeder extends Seeder
                 'nombre' => 'Mi Perfil',
                 'ruta' => '/dashboard',
                 'icono' => 'fa-user',
-                'orden' => 7,
+                'orden' => 8,
                 'activo' => true,
             ]);
             $perfilAdmin->roles()->attach($admin->id_rol);
@@ -151,6 +176,15 @@ class MenuItemSeeder extends Seeder
                 'activo' => true,
             ]);
             $menuMesero->roles()->attach($mesero->id_rol);
+
+            $reservasMesero = MenuItem::create([
+                'nombre' => 'Reservas',
+                'ruta' => '/reservas',
+                'icono' => 'fa-calendar-check',
+                'orden' => 5,
+                'activo' => true,
+            ]);
+            $reservasMesero->roles()->attach($mesero->id_rol);
         }
 
         // Menú para Cajero
@@ -222,6 +256,49 @@ class MenuItemSeeder extends Seeder
                 'activo' => true,
             ]);
             $pedidosCocinero->roles()->attach($cocinero->id_rol);
+        }
+        // Menú para Cliente
+        $cliente = Role::where('nombre_rol', 'cliente')->first();
+        if ($cliente) {
+            $inicioCliente = MenuItem::create([
+                'nombre' => 'Dashboard',
+                'ruta' => '/cliente/dashboard',
+                'icono' => 'fa-tachometer-alt',
+                'orden' => 1,
+                'activo' => true,
+            ]);
+            $inicioCliente->roles()->attach($cliente->id_rol);
+
+            $reservasCliente = MenuItem::create([
+                'nombre' => 'Reservar Mesas',
+                'ruta' => '#',
+                'icono' => 'fa-calendar-plus',
+                'orden' => 2,
+                'activo' => true,
+            ]);
+            $reservasCliente->roles()->attach($cliente->id_rol);
+
+            // Submenús Reservas
+            MenuItem::create([
+                'nombre' => 'Nueva Reserva',
+                'ruta' => '/cliente/reservas/crear',
+                'parent_id' => $reservasCliente->id,
+                'orden' => 1,
+                'activo' => true,
+            ])->roles()->attach($cliente->id_rol);
+
+            MenuItem::create([
+                'nombre' => 'Mis Reservas',
+                'ruta' => '/cliente/reservas',
+                'parent_id' => $reservasCliente->id,
+                'orden' => 2,
+                'activo' => true,
+            ])->roles()->attach($cliente->id_rol);
+
+            // Duplicate removed
+
+            // Pagos removed as per user request
+            // $pagosCliente = MenuItem::create([...]); 
         }
     }
 }

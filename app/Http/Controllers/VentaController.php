@@ -14,7 +14,7 @@ class VentaController extends Controller
     {
         // Administradores y Gerentes ven todas, Cajeros solo las suyas (o todas, depende de regla negocio)
         // Por ahora todas para admin/gerente/cajero
-        $ventas = Venta::with(['usuario', 'cliente'])->orderBy('fecha_venta', 'desc')->paginate(10);
+        $ventas = Venta::with(['usuario', 'cliente', 'reserva'])->orderBy('fecha_venta', 'desc')->paginate(10);
         return view('ventas.index', compact('ventas'));
     }
 

@@ -29,7 +29,10 @@ class RoleSeeder extends Seeder
                 'nombre_rol' => 'cocinero', // Lowercase consistency
                 'descripcion' => 'Encargado de preparar los pedidos',
             ],
-            // 'cliente' role removed as unnecessary
+            [
+                'nombre_rol' => 'cliente',
+                'descripcion' => 'Cliente que puede realizar pedidos y pagar',
+            ],
         ];
 
         foreach ($roles as $rol) {

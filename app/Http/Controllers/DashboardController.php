@@ -18,6 +18,10 @@ class DashboardController extends Controller
         $usuario = auth()->user();
         $rol = $usuario->role->nombre_rol;
 
+        if (strtolower($rol) === 'cliente') {
+            return redirect()->route('cliente.dashboard');
+        }
+
         // Obtener menú dinámico según el rol y convertirlo al formato esperado por el sidebar
         $menuItemsDB = $usuario->role->menuItems()
             ->activo()

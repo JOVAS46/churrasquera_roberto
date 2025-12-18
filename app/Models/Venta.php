@@ -18,6 +18,7 @@ class Venta extends Model
         'id_usuario',
         'id_cliente',
         'id_pedido',
+        'id_reserva',
     ];
 
     protected $casts = [
@@ -55,5 +56,13 @@ class Venta extends Model
     public function detalles(): HasMany
     {
         return $this->hasMany(DetalleVenta::class, 'id_venta', 'id_venta');
+    }
+
+    /**
+     * Reserva asociada (opcional)
+     */
+    public function reserva(): BelongsTo
+    {
+        return $this->belongsTo(Reserva::class, 'id_reserva', 'id_reserva');
     }
 }

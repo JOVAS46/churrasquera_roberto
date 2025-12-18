@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         $meseroRole = \App\Models\Role::where('nombre_rol', 'mesero')->first();
         $cajeroRole = \App\Models\Role::where('nombre_rol', 'cajero')->first();
         $cocineroRole = \App\Models\Role::where('nombre_rol', 'cocinero')->first();
+        $clienteRole = \App\Models\Role::where('nombre_rol', 'cliente')->first();
         
         // Usuario Gerente
         if ($gerenteRole) {
@@ -78,6 +79,21 @@ class DatabaseSeeder extends Seeder
                     'password' => bcrypt('password'),
                     'estado' => true,
                     'id_rol' => $cocineroRole->id_rol,
+                ]
+            );
+        }
+
+        // Usuario Cliente
+        if ($clienteRole) {
+            \App\Models\Usuario::firstOrCreate(
+                ['email' => 'cliente@restaurante.com'],
+                [
+                    'nombre' => 'Pedro',
+                    'apellido' => 'Cliente',
+                    'telefono' => '70456789',
+                    'password' => bcrypt('password'),
+                    'estado' => true,
+                    'id_rol' => $clienteRole->id_rol,
                 ]
             );
         }
