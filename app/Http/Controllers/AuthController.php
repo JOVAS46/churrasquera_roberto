@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Usuario;
+use App\Models\Role;
 
 class AuthController extends Controller
 {
@@ -44,6 +46,9 @@ class AuthController extends Controller
     /**
      * Cerrar sesión
      */
+    /**
+     * Cerrar sesión
+     */
     public function logout(Request $request)
     {
         Auth::logout();
@@ -51,5 +56,46 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/login')->with('success', 'Sesión cerrada exitosamente.');
+    }
+
+    /**
+     * Mostrar formulario de registro
+     */
+    public function showRegister()
+    {
+        return view('auth.register');
+    }
+
+    /**
+     * Procesar registro de cliente
+     */
+    public function register(Request $request)
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:usuarios',
+            'password' => 'required|string|min:6|confirmed',
+            'telefono' => 'nullable|string|max:20',
+        ]);
+
+        $clienteRole = Role::where('nombre_rol', 'cliente')->first();
+        if (!$clienteRole) {
+            return back()->withErrors(['email' => 'Error del sistema: Rol cliente no encontrado.']);
+        }
+
+        $usuario = Usuario::create([
+            'nombre' => $request->nombre,
+            'apellido' => $request->apellido,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'telefono' => $request->telefono,
+            'id_rol' => $clienteRole->id_rol,
+            'estado' => true,
+        ]);
+
+        Auth::guard('web')->login($usuario);
+
+        return redirect('/cliente/dashboard')->with('success', '¡Cuenta creada exitosamente!');
     }
 }

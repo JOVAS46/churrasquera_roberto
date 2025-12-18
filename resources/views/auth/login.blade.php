@@ -36,6 +36,10 @@
                 <input type="password" class="form-control" id="password" name="password" required>
               </div>
               <button type="submit" class="btn btn-primary w-100">Login</button>
+              
+              <div class="mt-3 text-center">
+                  <a href="{{ url('/register') }}" class="text-decoration-none">¿No tienes cuenta? Regístrate aquí</a>
+              </div>
             </form>
 
           </div>
